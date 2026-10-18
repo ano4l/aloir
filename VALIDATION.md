@@ -49,4 +49,3 @@ A live store connection has not been supplied. Shopify rendering, actual Trendsi
 - Checkout accepts no payment; newsletter/contact details are not submitted. No Shopify, Trendsi, supplier inventory or live checkout connection was activated.
 - Vercel configuration and deployment instructions are in `vercel.json` and `DEMO.md`. Local checks establish build readiness; an actual hosted Vercel deployment must still be verified after import.
 - Browser accessibility automation produced zero passes as well as zero violations, so that output is inconclusive and is not an accessibility-compliance claim.
-

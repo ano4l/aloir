@@ -1,12 +1,12 @@
-{% liquid
- assign price_variant = variant
- if price_variant == blank
-  for candidate in product.variants
-   if candidate.price == product.price
-    assign price_variant = candidate
-    break
-   endif
-  endfor
- endif
-%}
-<span class="price" {% if id %}id="{{ id }}"{% endif %}>{% if product.price_varies %}<span>From </span>{% endif %}{{ price_variant.price | default: product.price | money }}{% if price_variant.compare_at_price > price_variant.price %} <s>{{ price_variant.compare_at_price | money }}</s>{% endif %}</span>
+{% liquid
+ assign price_variant = variant
+ if price_variant == blank
+  for candidate in product.variants
+   if candidate.price == product.price
+    assign price_variant = candidate
+    break
+   endif
+  endfor
+ endif
+%}
+<span class="price" {% if id %}id="{{ id }}"{% endif %}>{% if product.price_varies %}<span>From </span>{% endif %}{{ price_variant.price | default: product.price | money }}{% if price_variant.compare_at_price > price_variant.price %} <s>{{ price_variant.compare_at_price | money }}</s>{% endif %}</span>
