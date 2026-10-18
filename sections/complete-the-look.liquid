@@ -1,0 +1,16 @@
+{% liquid
+ assign coordinated_products = product.metafields.custom.complete_the_look.value
+ if coordinated_products == blank
+  assign coordinated_products = section.settings.products
+ endif
+ assign eligible_count = 0
+ for coordinated_product in coordinated_products
+  if coordinated_product.id != product.id and coordinated_product.available
+   assign eligible_count = eligible_count | plus: 1
+  endif
+ endfor
+%}
+{% if eligible_count > 0 %}<section class="section complete-the-look" data-complete-look><header class="collection-heading"><div><p class="eyebrow">Coordinated pieces</p><h2 class="section-title">{{ section.settings.heading | escape }}</h2></div><p class="collection-introduction">{{ section.settings.description | escape }}</p></header><div class="product-grid">{% for coordinated_product in coordinated_products %}{% if coordinated_product.id != product.id and coordinated_product.available %}{% render 'product-card', product: coordinated_product %}{% endif %}{% endfor %}</div></section>{% elsif request.design_mode %}<section class="section empty-state"><h2>{{ section.settings.heading | escape }}</h2><p>Select coordinating products below or add product references to custom.complete_the_look. This section stays hidden from shoppers until available pieces are selected.</p></section>{% endif %}
+{% schema %}
+{"name":"Complete the look","settings":[{"type":"text","id":"heading","label":"Heading","default":"Complete the look"},{"type":"text","id":"description","label":"Introduction","default":"Thoughtfully paired pieces to wear together."},{"type":"product_list","id":"products","label":"Fallback coordinating products","limit":8,"info":"Product-specific custom.complete_the_look references take priority."}],"presets":[{"name":"Complete the look"}]}
+{% endschema %}

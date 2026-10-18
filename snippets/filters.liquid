@@ -1,0 +1,24 @@
+{% liquid
+ assign current_sort = results.sort_by | default: results.default_sort_by
+ assign filter_action = results.url
+ if search_context
+  assign filter_action = routes.search_url
+ endif
+%}
+{% liquid
+ assign active_count = 0
+ for filter in results.filters
+  assign active_count = active_count | plus: filter.active_values.size
+  if filter.type == 'price_range'
+   if filter.min_value.value != nil or filter.max_value.value != nil
+    assign active_count = active_count | plus: 1
+   endif
+  endif
+ endfor
+%}
+<form class="filter-form" action="{{ filter_action }}" method="get">
+ {% if search_context %}<input type="hidden" name="q" value="{{ results.terms | escape }}"><input type="hidden" name="type" value="product"><input type="hidden" name="options[prefix]" value="last">{% endif %}
+ <p class="filter-count">{% if results.filters.size > 0 %}Filters{% else %}Sort results{% endif %}{% if active_count > 0 %} ({{ active_count }} active){% endif %}</p>
+ <div class="filter-fields">{% for filter in results.filters %}{% assign filter_index = forloop.index %}<details class="filter"><summary>{{ filter.label }}{% if filter.active_values.size > 0 %} ({{ filter.active_values.size }}){% endif %}</summary><div class="filter-options">{% case filter.type %}{% when 'boolean', 'list' %}{% for value in filter.values %}<label for="Filter-{{ section_id }}-{{ filter_index }}-{{ forloop.index }}"><input id="Filter-{{ section_id }}-{{ filter_index }}-{{ forloop.index }}" type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>{{ value.label }} ({{ value.count }})</label>{% endfor %}{% when 'price_range' %}<p class="filter-currency">Prices in {{ cart.currency.iso_code | default: shop.currency }}</p><label for="FilterMin-{{ section_id }}-{{ filter_index }}">Minimum</label><input id="FilterMin-{{ section_id }}-{{ filter_index }}" name="{{ filter.min_value.param_name }}" type="number" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" {% if filter.min_value.value %}value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %} step="0.01"><label for="FilterMax-{{ section_id }}-{{ filter_index }}">Maximum</label><input id="FilterMax-{{ section_id }}-{{ filter_index }}" name="{{ filter.max_value.param_name }}" type="number" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" {% if filter.max_value.value %}value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %} step="0.01">{% endcase %}</div></details>{% endfor %}</div>
+ <div class="sort-controls"><label for="SortBy-{{ section_id }}">Sort by</label><select id="SortBy-{{ section_id }}" name="sort_by">{% for option in results.sort_options %}<option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{{ option.name }}</option>{% endfor %}</select><button type="submit" class="button">Apply</button></div>
+</form>

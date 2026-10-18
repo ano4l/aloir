@@ -1,0 +1,36 @@
+{% liquid
+ assign chart = product.metafields.custom.size_chart.value
+ assign valid_chart = true
+ unless chart.unit == 'cm' or chart.unit == 'in'
+  assign valid_chart = false
+ endunless
+ unless chart.measurement_type == 'garment' or chart.measurement_type == 'body'
+  assign valid_chart = false
+ endunless
+ if chart.columns.size == 0 or chart.rows.size == 0 or chart.columns.first == blank or chart.rows.first == blank
+  assign valid_chart = false
+ endif
+ for column in chart.columns
+  if column == blank
+   assign valid_chart = false
+  endif
+ endfor
+ for row in chart.rows
+  if row.size == blank or row.values.size != chart.columns.size or row.values.first == nil
+   assign valid_chart = false
+  endif
+  for value in row.values
+   if value == nil or value == blank
+    assign valid_chart = false
+   endif
+  endfor
+ endfor
+%}
+{% if valid_chart %}<div class="product-measurements" data-product-measurements>
+ <a class="text-link" href="#Measurements-{{ section_id }}" data-measurement-link>View product measurements {% render 'icon', name: 'arrow' %}</a>
+ <details open id="Measurements-{{ section_id }}" class="measurement-details"><summary>Product measurements</summary><div data-measurement-content>
+ <p class="measurement-context">{% if chart.measurement_type == 'body' %}Body measurements — compare with your own measurements.{% else %}Garment measurements — compare with a similar piece you own.{% endif %}</p>
+ <div class="measurement-units" role="group" aria-label="Measurement unit" hidden><button type="button" data-measurement-unit="cm" aria-pressed="{% if chart.unit == 'cm' %}true{% else %}false{% endif %}">cm</button><button type="button" data-measurement-unit="in" aria-pressed="{% if chart.unit == 'in' %}true{% else %}false{% endif %}">in</button></div>
+ <div class="measurement-scroll" tabindex="0" role="region" aria-label="Product measurement table"><table><caption>{{ product.title | escape }} — <span data-measurement-caption-unit>{{ chart.unit }}</span></caption><thead><tr><th scope="col">Size</th>{% for column in chart.columns %}<th scope="col">{{ column | escape }}</th>{% endfor %}</tr></thead><tbody>{% for row in chart.rows %}<tr><th scope="row">{{ row.size | escape }}</th>{% for value in row.values %}<td data-measurement-cell>{{ value | escape }}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div>
+ <p class="measurement-source">Source unit: {{ chart.unit }}. Ranges and descriptive values retain their original unit when switching.</p><p class="measurement-conversion" hidden>Converted values are rounded to one decimal place.</p>{% if chart.note != blank %}<p class="measurement-note">{{ chart.note | escape }}</p>{% endif %}
+ </div></details><script type="application/json" data-size-chart-json>{{ chart | json | replace: '<', '\u003c' }}</script></div>{% endif %}

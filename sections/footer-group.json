@@ -1,0 +1,45 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "c0": {
+          "type": "column",
+          "settings": {
+            "heading": "Shop"
+          }
+        },
+        "c1": {
+          "type": "column",
+          "settings": {
+            "heading": "Customer care"
+          }
+        },
+        "c2": {
+          "type": "column",
+          "settings": {
+            "heading": "About"
+          }
+        },
+        "c3": {
+          "type": "column",
+          "settings": {
+            "heading": "Connect"
+          }
+        }
+      },
+      "block_order": [
+        "c0",
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

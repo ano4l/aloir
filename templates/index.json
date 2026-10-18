@@ -1,0 +1,101 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {}
+    },
+    "intro": {
+      "type": "wardrobe-intro",
+      "settings": {}
+    },
+    "edits": {
+      "type": "category-grid",
+      "settings": {
+        "heading": "Find your own rhythm"
+      },
+      "blocks": {
+        "soft": {
+          "type": "category",
+          "settings": {
+            "title": "Soft structure",
+            "description": "Tailoring with room to move."
+          }
+        },
+        "ease": {
+          "type": "category",
+          "settings": {
+            "title": "Everyday ease",
+            "description": "The pieces that make a day feel effortless."
+          }
+        },
+        "evening": {
+          "type": "category",
+          "settings": {
+            "title": "After hours",
+            "description": "A different mood. The same sense of self."
+          }
+        }
+      },
+      "block_order": [
+        "soft",
+        "ease",
+        "evening"
+      ]
+    },
+    "collection": {
+      "type": "featured-collection",
+      "settings": {}
+    },
+    "seasonal": {
+      "type": "seasonal-edit",
+      "settings": {}
+    },
+    "story": {
+      "type": "editorial-story",
+      "settings": {
+        "text": "<p>Getting dressed can be a small act of self-expression. We look to considered silhouettes, thoughtful combinations, and the confidence of finding your own point of view.</p>"
+      },
+      "blocks": {
+        "shape": {
+          "type": "principle",
+          "settings": {
+            "heading": "Begin with a silhouette",
+            "text": "Let one considered shape set the tone. Keep the rest beautifully simple."
+          }
+        },
+        "texture": {
+          "type": "principle",
+          "settings": {
+            "heading": "Bring textures together",
+            "text": "Pair a soft layer with a clean line. Contrast creates interest without adding noise."
+          }
+        },
+        "self": {
+          "type": "principle",
+          "settings": {
+            "heading": "Leave room for you",
+            "text": "A favourite detail, an unexpected pairing. The most interesting part of any look is the person wearing it."
+          }
+        }
+      },
+      "block_order": [
+        "shape",
+        "texture",
+        "self"
+      ]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "collection",
+    "intro",
+    "edits",
+    "seasonal",
+    "story",
+    "newsletter"
+  ]
+}

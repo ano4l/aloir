@@ -1,0 +1,46 @@
+<section class="section main-collection"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><span>{{ collection.title }}</span></nav><header class="page-heading"><h1>{{ collection.title }}</h1><div class="rte">{{ collection.description }}</div></header>{% if section.settings.show_image and collection.image %}<div class="collection-hero">{% render 'responsive-image', image: collection.image, sizes: '100vw' %}</div>{% endif %}<button type="button" class="button mobile-filter-button" data-open-filters hidden>Filter &amp; sort {% render 'icon', name: 'plus' %}</button><div data-filter-controls>{% render 'filters', results: collection, section_id: section.id %}</div>{% render 'active-filters', results: collection %}{% paginate collection.products by section.settings.products_per_page %}<p class="result-count">{{ collection.products_count }} pieces</p><h2 class="visually-hidden">Collection products</h2><div class="product-grid">{% for product in collection.products %}{% render 'product-card', product: product %}{% else %}<div class="empty-state"><h2>No pieces found</h2><p>Try adjusting your filters.</p><a class="text-link" href="{{ collection.url }}?sort_by={{ collection.sort_by | default: collection.default_sort_by | url_encode }}">Clear filters</a></div>{% endfor %}</div>{% render 'pagination', paginate: paginate %}{% endpaginate %}</section>
+
+{% schema %}
+
+{
+
+  "name": "Collection",
+
+  "settings": [
+
+    {
+
+      "type": "checkbox",
+
+      "id": "show_image",
+
+      "label": "Show collection image",
+
+      "default": false
+
+    },
+
+    {
+
+      "type": "range",
+
+      "id": "products_per_page",
+
+      "label": "Products per page",
+
+      "min": 10,
+
+      "max": 50,
+
+      "step": 5,
+
+      "default": 20
+
+    }
+
+  ]
+
+}
+
+{% endschema %}
+

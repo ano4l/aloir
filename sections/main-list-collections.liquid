@@ -1,0 +1,7 @@
+<section class="section"><h1>Collections</h1>{% paginate collections by 24 %}<div class="category-grid">{% for collection in collections %}<a class="category-tile" href="{{ collection.url }}">{% render 'responsive-image', image: collection.featured_image, alt: collection.title %}<h2>{{ collection.title }}</h2></a>{% else %}<p>New collections will appear here as they arrive.</p>{% endfor %}</div>{% render 'pagination', paginate: paginate %}{% endpaginate %}</section>
+{% schema %}
+{
+  "name": "Collections",
+  "settings": []
+}
+{% endschema %}

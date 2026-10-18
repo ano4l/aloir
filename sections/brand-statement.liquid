@@ -1,0 +1,19 @@
+<section class="brand-statement section"><h2>{{ section.settings.heading | escape | newline_to_br }}</h2></section>
+{% schema %}
+{
+  "name": "Brand statement",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Statement",
+      "default": "Style is an expression.\nElegance is an attitude."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand statement"
+    }
+  ]
+}
+{% endschema %}

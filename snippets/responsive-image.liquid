@@ -1,0 +1,20 @@
+{% liquid
+
+ assign loading = loading | default: 'lazy'
+
+ assign sizes = sizes | default: '(min-width: 990px) 50vw, 100vw'
+
+ assign image_alt = image.alt | default: alt
+ assign image_style = blank
+ if image.presentation.focal_point != blank
+  assign image_style = 'object-position: ' | append: image.presentation.focal_point
+ endif
+ assign fallback_width = 1024
+ assign fallback_height = 1536
+ if fallback == 'detail.webp'
+  assign fallback_width = 1536
+  assign fallback_height = 1024
+ endif
+%}
+
+{% if image != blank %}{{ image | image_url: width: 2400 | image_tag: widths: '320,480,640,800,1000,1200,1600,2000,2400', sizes: sizes, loading: loading, class: class, alt: image_alt, style: image_style }}{% elsif fallback != blank %}<img src="{{ fallback | asset_url }}" alt="{{ alt | escape }}" width="{{ fallback_width }}" height="{{ fallback_height }}" loading="{{ loading }}" class="{{ class }}">{% else %}{{ 'image' | placeholder_svg_tag: 'placeholder-image' }}{% endif %}

@@ -1,0 +1,4 @@
+<section class="section wardrobe-intro"><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape | newline_to_br }}</h2><div class="intro-text">{{ section.settings.text }}</div></section>
+{% schema %}
+{"name":"Wardrobe introduction","settings":[{"type":"text","id":"eyebrow","label":"Introductory line","default":"A wardrobe with intention"},{"type":"textarea","id":"heading","label":"Heading","default":"Fewer decisions.\nMore possibilities."},{"type":"richtext","id":"text","label":"Text","default":"<p>A soft layer. A beautiful line. The piece that brings everything together. Explore a wardrobe built around the way you want to feel.</p>"}],"presets":[{"name":"Wardrobe introduction"}]}
+{% endschema %}

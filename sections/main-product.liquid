@@ -1,0 +1,98 @@
+<nav class="breadcrumbs section" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span>{% if collection %}<a href="{{ collection.url }}">{{ collection.title }}</a>{% else %}<a href="{{ routes.all_products_collection_url }}">The collection</a>{% endif %}<span aria-hidden="true">/</span><span>{{ product.title }}</span></nav>
+
+<section class="section product-page" data-product-section>
+
+ <div class="product-gallery"><div class="product-gallery-images" data-gallery>{% for media in product.media %}<div class="product-media" id="Media-{{ media.id }}" data-media-id="{{ media.id }}">{% case media.media_type %}{% when 'image' %}{% assign gallery_loading = 'lazy' %}{% if forloop.first %}{% assign gallery_loading = 'eager' %}{% endif %}<a href="{{ media | image_url: width: 2400 }}" data-zoom-image>{% render 'responsive-image', image: media, loading: gallery_loading, sizes: '(min-width: 990px) 55vw, 100vw' %}</a>{% when 'video' %}{{ media | video_tag: controls: true, preload: 'metadata', image_size: '1200x' }}{% when 'external_video' %}{{ media | external_video_tag }}{% when 'model' %}{{ media | model_viewer_tag: reveal: 'interaction', toggleable: true }}{% endcase %}</div>{% else %}{{ 'product-1' | placeholder_svg_tag: 'placeholder-image' }}{% endfor %}</div><div class="gallery-caption"><span>Explore the details</span><p class="gallery-progress" data-gallery-progress>1 / {{ product.media.size }}</p></div><nav class="gallery-thumbnails" aria-label="Product images">{% for media in product.media %}<a href="#Media-{{ media.id }}" data-gallery-target="{{ media.id }}" {% if forloop.first %}aria-current="true"{% endif %} aria-label="View media {{ forloop.index }}">{{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '80px' }}</a>{% endfor %}</nav></div>
+
+ <div class="product-information"><p class="eyebrow">{{ product.vendor }}</p><h1>{{ product.title }}</h1>{% assign selected_variant = product.selected_or_first_available_variant %}<p class="product-price" data-variant-price>{{ selected_variant.price | money }}{% if selected_variant.compare_at_price > selected_variant.price %} <s>{{ selected_variant.compare_at_price | money }}</s>{% endif %}</p><p class="variant-saving" data-variant-saving>{% if selected_variant.compare_at_price > selected_variant.price %}Save {{ selected_variant.compare_at_price | minus: selected_variant.price | money }}{% endif %}</p>
+
+ {% render 'product-measurements', product: product, section_id: section.id %}
+ {% assign product_form_id = 'ProductForm-' | append: section.id %}{% form 'product', product, id: product_form_id, class: 'product-form', data-product-form: '' %}{% unless product.has_only_default_variant %}<div data-option-groups hidden>{% for option in product.options_with_values %}<label for="Option-{{ section.id }}-{{ forloop.index }}">{{ option.name }}</label><select id="Option-{{ section.id }}-{{ forloop.index }}" data-product-option data-position="{{ forloop.index0 }}">{% for value in option.values %}<option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select>{% endfor %}</div>{% endunless %}<div data-native-variant><label for="Variant-{{ section.id }}">{% if product.has_only_default_variant %}Style{% else %}Size / colour / options{% endif %}</label><select id="Variant-{{ section.id }}" name="id" data-variant-select>{% for variant in product.variants %}<option value="{{ variant.id }}" {% if variant.id == selected_variant.id %}selected{% endif %}>{{ variant.title }}{% unless variant.available %} · Sold out{% endunless %}</option>{% endfor %}</select></div><div class="quantity-row"><label for="Quantity-{{ section.id }}">Quantity</label><input id="Quantity-{{ section.id }}" type="number" name="quantity" min="1" value="1" step="1"></div><p class="selection-summary" data-selection-summary>{% unless product.has_only_default_variant %}{{ selected_variant.title }} &middot; {% endunless %}{% if selected_variant.available %}Available{% else %}Sold out{% endif %}</p><button class="button add-to-bag" type="submit" {% unless selected_variant.available %}disabled{% endunless %} data-add-button>{% if selected_variant.available %}Add to bag{% else %}Sold out{% endif %}</button><p class="form-message" role="status"></p>{% if section.settings.dynamic_checkout %}<div data-dynamic-checkout {% unless selected_variant.available %}hidden{% endunless %}>{{ form | payment_button }}</div>{% endif %}{% endform %}
+
+ {% render 'product-fulfilment', product: product %}
+ {% if section.settings.size_guide != blank %}<a class="text-link" href="{{ section.settings.size_guide.url }}" data-size-guide-dialog="SizeGuide-{{ section.id }}">How to measure {% render 'icon', name: 'arrow' %}</a><dialog id="SizeGuide-{{ section.id }}" class="size-guide-dialog" aria-label="Size guide"><div class="drawer-heading"><h2>{{ section.settings.size_guide.title }}</h2><button type="button" data-close-dialog aria-label="Close size guide">{% render 'icon', name: 'close' %}</button></div><div class="rte">{{ section.settings.size_guide.content }}</div><a class="text-link" href="{{ section.settings.size_guide.url }}">View size guide page</a></dialog>{% endif %}
+
+ <div class="product-accordions"><details open><summary>Product details</summary><div class="rte">{{ product.description }}</div></details><details><summary>Size &amp; fit</summary><div class="rte">{% if product.metafields.custom.size_fit != blank %}{{ product.metafields.custom.size_fit | metafield_tag }}{% else %}{{ section.settings.size_fit }}{% endif %}</div></details><details><summary>Shipping &amp; returns</summary><div class="rte">{{ section.settings.shipping }}</div></details><details><summary>Care instructions</summary><div class="rte">{% if product.metafields.custom.care_instructions != blank %}{{ product.metafields.custom.care_instructions | metafield_tag }}{% else %}{{ section.settings.care }}{% endif %}</div></details></div>
+
+ {% for block in section.blocks %}{% render block %}{% endfor %}
+
+ <script type="application/json" data-variants>{{ product.variants | json }}</script>
+
+ <div class="mobile-buy-bar" data-mobile-buy hidden><div><span class="mobile-buy-title">{{ product.title }}</span><span class="sticky-selection" data-sticky-selection>{% unless product.has_only_default_variant %}{{ selected_variant.title }}{% endunless %}</span><span data-sticky-price>{{ selected_variant.price | money }}</span></div><button class="button" type="button" data-sticky-add {% unless selected_variant.available %}disabled{% endunless %}>{% if selected_variant.available %}Add to bag{% else %}Sold out{% endif %}</button></div>
+
+ </div></section><script type="application/ld+json">{{ product | structured_data }}</script>
+
+{% schema %}
+
+{
+
+  "name": "Product",
+
+  "blocks": [{"type":"@app"}],
+
+  "settings": [
+
+    {
+
+      "type": "checkbox",
+
+      "id": "dynamic_checkout",
+
+      "label": "Show dynamic checkout",
+
+      "default": true
+
+    },
+
+    {
+
+      "type": "page",
+
+      "id": "size_guide",
+
+      "label": "Size guide page"
+
+    },
+
+    {
+
+      "type": "richtext",
+
+      "id": "size_fit",
+
+      "label": "Default size and fit information",
+
+      "default": "<p>Consult the product description and size guide for measurements before ordering.</p>"
+
+    },
+
+    {
+
+      "type": "richtext",
+
+      "id": "shipping",
+
+      "label": "Shipping and returns information",
+
+      "default": "<p>Review our shipping and returns policies for delivery estimates and eligibility.</p>"
+
+    },
+
+    {
+
+      "type": "richtext",
+
+      "id": "care",
+
+      "label": "Default care information",
+
+      "default": "<p>Follow the garment care label to keep your piece looking its best.</p>"
+
+    }
+
+  ]
+
+}
+
+{% endschema %}
+

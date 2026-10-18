@@ -1,0 +1,42 @@
+<header class="site-header">
+
+ <button class="mobile-menu icon-button" type="button" data-open-dialog="MobileMenu" aria-label="Open menu">{% render 'icon', name: 'menu' %}</button>
+
+ <nav class="desktop-nav" aria-label="Main navigation">{% if section.settings.menu.links.size > 0 %}{% for item in section.settings.menu.links %}{% if item.links != blank %}<details class="nav-dropdown"><summary>{{ item.title }} <span aria-hidden="true">⌄</span></summary><div class="nav-dropdown-panel">{% for child in item.links %}<a href="{{ child.url }}">{{ child.title }}</a>{% if child.links != blank %}{% for grandchild in child.links %}<a class="sub-link" href="{{ grandchild.url }}">{{ grandchild.title }}</a>{% endfor %}{% endif %}{% endfor %}</div></details>{% else %}<a href="{{ item.url }}" {% if item.current %}aria-current="page"{% endif %}>{{ item.title }}</a>{% endif %}{% endfor %}{% else %}<a href="{{ routes.all_products_collection_url }}">Shop</a><a href="{{ routes.collections_url }}">Collections</a>{% endif %}</nav>
+
+ <a class="wordmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} home">{% if settings.logo %}{{ settings.logo | image_url: width: 480 | image_tag: widths: '160,240,320,480', sizes: '240px', alt: shop.name }}{% else %}{{ settings.brand_name }}{% endif %}</a>
+
+ <div class="header-tools"><button type="button" class="icon-button" data-open-dialog="SearchDialog" aria-label="Search">{% render 'icon', name: 'search' %}</button>{% if shop.customer_accounts_enabled %}<a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', name: 'account' %}</a>{% endif %}<button class="icon-button wishlist-link" type="button" data-open-wishlist aria-label="Saved pieces">{% render 'icon', name: 'heart' %}</button><a class="bag-link icon-button" href="{{ routes.cart_url }}" data-open-cart aria-label="Shopping bag">{% render 'icon', name: 'bag' %}<span data-cart-count>{{ cart.item_count }}</span></a></div>
+
+</header>
+
+<dialog id="MobileMenu" class="side-dialog menu-dialog" aria-label="Navigation menu"><div class="drawer-heading"><span class="wordmark">{{ settings.brand_name }}</span><button type="button" data-close-dialog aria-label="Close menu">{% render 'icon', name: 'close' %}</button></div><nav aria-label="Mobile navigation">{% if section.settings.menu.links.size > 0 %}{% for item in section.settings.menu.links %}{% if item.links != blank %}<details><summary>{{ item.title }}</summary>{% for child in item.links %}<a href="{{ child.url }}">{{ child.title }}</a>{% for grandchild in child.links %}<a class="sub-link" href="{{ grandchild.url }}">{{ grandchild.title }}</a>{% endfor %}{% endfor %}</details>{% else %}<a href="{{ item.url }}">{{ item.title }}</a>{% endif %}{% endfor %}{% else %}<a href="{{ routes.all_products_collection_url }}">Shop all pieces</a><a href="{{ routes.collections_url }}">Collections</a>{% endif %}{% if shop.customer_accounts_enabled %}<a href="{{ routes.account_url }}">My account</a>{% endif %}<button class="mobile-saved-link" type="button" data-open-wishlist>Saved pieces {% render 'icon', name: 'heart' %}</button></nav></dialog>
+
+<dialog id="SearchDialog" class="search-dialog" aria-label="Search the collection"><div class="drawer-heading"><h2>Find your next piece</h2><button type="button" data-close-dialog aria-label="Close search">{% render 'icon', name: 'close' %}</button></div><form action="{{ routes.search_url }}" method="get" role="search"><label for="HeaderSearch">Search the collection</label><div class="input-row"><div class="search-field"><input id="HeaderSearch" data-predictive-search type="search" aria-controls="PredictiveResults" aria-expanded="false" name="q" autocomplete="off" placeholder="Search pieces, colours, collections" required><button type="button" data-clear-search class="clear-search" aria-label="Clear search" hidden>{% render 'icon', name: 'close' %}</button></div><input type="hidden" name="type" value="product"><button class="button" type="submit">Search</button></div><div id="PredictiveResults" class="predictive-results" aria-live="polite" data-predictive-results></div></form></dialog>
+
+{% schema %}
+
+{
+
+  "name": "Header",
+
+  "settings": [
+
+    {
+
+      "type": "link_list",
+
+      "id": "menu",
+
+      "label": "Navigation menu",
+
+      "default": "main-menu"
+
+    }
+
+  ]
+
+}
+
+{% endschema %}
+

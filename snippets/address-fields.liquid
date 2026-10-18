@@ -1,0 +1,11 @@
+<label for="FirstName-{{ address_id }}">First name</label><input id="FirstName-{{ address_id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name">
+<label for="LastName-{{ address_id }}">Last name</label><input id="LastName-{{ address_id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name">
+<label for="Company-{{ address_id }}">Company</label><input id="Company-{{ address_id }}" name="address[company]" value="{{ form.company }}" autocomplete="organization">
+<label for="Address1-{{ address_id }}">Address</label><input id="Address1-{{ address_id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" required>
+<label for="Address2-{{ address_id }}">Apartment, suite, etc.</label><input id="Address2-{{ address_id }}" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2">
+<label for="City-{{ address_id }}">City</label><input id="City-{{ address_id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" required>
+<label for="Country-{{ address_id }}">Country</label><select id="Country-{{ address_id }}" name="address[country]" data-address-country data-default="{{ form.country | escape }}" data-province-id="Province-{{ address_id }}" autocomplete="country">{{ all_country_option_tags }}</select>
+<label for="Province-{{ address_id }}">State / province</label><select id="Province-{{ address_id }}" name="address[province]" data-default="{{ form.province | escape }}" autocomplete="address-level1"><option value="{{ form.province | escape }}">{{ form.province }}</option></select>
+<label for="Zip-{{ address_id }}">ZIP / postal code</label><input id="Zip-{{ address_id }}" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code">
+<label for="Phone-{{ address_id }}">Phone</label><input id="Phone-{{ address_id }}" name="address[phone]" type="tel" value="{{ form.phone }}" autocomplete="tel">
+<label>{{ form.set_as_default_checkbox }} Set as default address</label>

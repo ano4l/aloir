@@ -1,0 +1,8 @@
+artifacts/
+dist/
+.shopify/
+tools/preview/node_modules/
+tools/preview/.render/
+assets/*.png
+RESEARCH-ECOMMERCE.md
+VALIDATION.md

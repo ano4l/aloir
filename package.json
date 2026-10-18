@@ -1,0 +1,14 @@
+{
+  "name": "eloir-fashion-demo",
+  "version": "1.4.0",
+  "private": true,
+  "description": "Eloir Shopify theme and isolated Vercel demonstration runtime",
+  "scripts": {
+    "dev": "node tools/demo/server.cjs",
+    "build": "node tools/demo/build.cjs",
+    "start": "node tools/demo/server.cjs",
+    "test": "node --test tools/demo/demo.test.cjs"
+  },
+  "engines": { "node": "22.x" },
+  "dependencies": { "liquidjs": "10.30.0" }
+}

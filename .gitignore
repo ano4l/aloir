@@ -1,0 +1,10 @@
+tools/preview/node_modules/
+tools/preview/.render/
+.shopify/
+dist/
+node_modules/
+public/
+tools/demo/.render/
+tools/demo/compiled/
+.vercel/
+artifacts/

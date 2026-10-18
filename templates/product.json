@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "s0": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "s1": {
+      "type": "related-products",
+      "settings": {}
+    },
+    "complete_look": {
+      "type": "complete-the-look",
+      "settings": {}
+    }
+  },
+  "order": [
+    "s0",
+    "complete_look",
+    "s1"
+  ]
+}

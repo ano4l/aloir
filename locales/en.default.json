@@ -1,0 +1,11 @@
+{
+  "general": {
+    "accessibility": {
+      "close": "Close",
+      "skip_to_content": "Skip to content"
+    }
+  },
+  "customer": {
+    "log_in": "Log in"
+  }
+}

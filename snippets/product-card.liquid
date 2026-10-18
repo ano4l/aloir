@@ -1,0 +1,17 @@
+{% liquid
+ assign card_variant = product.selected_or_first_available_variant
+ assign display_variant = card_variant
+ for candidate in product.variants
+  if candidate.price == product.price
+   assign display_variant = candidate
+   break
+  endif
+ endfor
+%}
+<article class="product-card">
+ <div class="product-card-media"><a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% if product.featured_image %}{% render 'responsive-image', image: product.featured_image, sizes: '(min-width: 1440px) 20vw, (min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', class: 'primary-image' %}{% if product.images[1] %}{% render 'responsive-image', image: product.images[1], sizes: '(min-width: 1440px) 20vw, 50vw', class: 'secondary-image' %}{% endif %}{% else %}{{ 'product-1' | placeholder_svg_tag: 'placeholder-image' }}{% endif %}</a>
+ <button class="save-button" type="button" aria-label="Save {{ product.title | escape }}" aria-pressed="false" data-save-product data-handle="{{ product.handle }}" data-title="{{ product.title | escape }}" data-url="{{ product.url }}" data-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 400 }}{% endif %}">{% render 'icon', name: 'heart' %}</button>
+ {% if display_variant.compare_at_price > display_variant.price and display_variant.available %}<span class="sale-label">Reduced{% if product.price_varies %} option{% endif %}</span>{% endif %}{% unless product.available %}<span class="sold-out-label">Sold out</span>{% endunless %}
+ {% if product.available %}<a href="{{ product.url }}" class="button quick-add" data-quick-shop="{{ product.url }}" data-product-title="{{ product.title | escape }}">Quick shop</a>{% endif %}</div>
+ <div class="product-card-info"><div><h3><a href="{{ product.url }}">{{ product.title }}</a></h3>{% render 'price', product: product, variant: display_variant %}</div><a class="icon-button" href="{{ product.url }}" data-quick-shop="{{ product.url }}" data-product-title="{{ product.title | escape }}" aria-label="Quick shop {{ product.title | escape }}">{% render 'icon', name: 'bag' %}</a></div>
+</article>
