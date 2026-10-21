@@ -1,0 +1,40 @@
+{% liquid
+  assign tab_keys = 'collection,tops_collection,dresses_collection,denim_collection,knitwear_collection' | split: ','
+  assign tab_handles = 'features,tops,dresses,denim,sweaters-knitwear' | split: ','
+  assign tab_labels = 'Featured,Tops,Dresses,Denim,Knitwear' | split: ','
+  assign product_limit = section.settings.limit | default: 4
+  if mode == 'seasonal'
+    assign tab_keys = 'layer_collection,knitwear_collection,evening_collection' | split: ','
+    assign tab_handles = 'tops,sweaters-knitwear,dresses' | split: ','
+    assign tab_labels = 'Light layers,Knitwear,Evening dressing' | split: ','
+    assign product_limit = 3
+  endif
+  assign switcher_id = section.id | append: '-' | append: mode
+%}
+<div class="collection-switcher" data-collection-switcher>
+  <nav class="collection-tabs discovery-tabs" aria-label="{% if mode == 'seasonal' %}Shop by mood{% else %}Shop by collection{% endif %}" data-collection-tablist>
+    {% for key in tab_keys %}{% liquid
+      assign tab_collection = section.settings[key]
+      assign fallback_handle = tab_handles[forloop.index0]
+      if tab_collection == blank
+        assign tab_collection = collections[fallback_handle]
+      endif
+      assign tab_url = tab_collection.url | default: routes.collections_url
+    %}<a id="Tab-{{ switcher_id }}-{{ forloop.index }}" href="{{ tab_url }}" data-collection-tab aria-controls="Panel-{{ switcher_id }}-{{ forloop.index }}">{{ tab_labels[forloop.index0] }}</a>{% endfor %}
+  </nav>
+  {% for key in tab_keys %}{% liquid
+    assign tab_collection = section.settings[key]
+    assign fallback_handle = tab_handles[forloop.index0]
+    if tab_collection == blank
+      assign tab_collection = collections[fallback_handle]
+    endif
+    assign tab_title = tab_labels[forloop.index0]
+    assign tab_count = tab_collection.products_count | default: 0
+  %}
+    <div id="Panel-{{ switcher_id }}-{{ forloop.index }}" class="collection-tab-panel" data-collection-panel aria-labelledby="Tab-{{ switcher_id }}-{{ forloop.index }}">
+      <div class="collection-scope"><h3>{{ tab_title }}</h3><span>{{ tab_count }} {% if tab_count == 1 %}piece{% else %}pieces{% endif %}</span></div>
+      {% if tab_count > 0 %}<div class="product-grid discovery-product-grid {% if mode == 'seasonal' %}seasonal-product-grid{% endif %}">{% for product in tab_collection.products limit: product_limit %}{% render 'product-card', product: product %}{% endfor %}</div><div class="collection-end"><span class="small-text">{{ tab_collection.title | escape }} / The collection</span><a class="text-link" href="{{ tab_collection.url }}">Explore {{ tab_title | downcase }} {% render 'icon', name: 'arrow' %}</a></div>
+      {% else %}<div class="empty-collection"><p class="eyebrow">A little room for what's next</p><h3>This edit is taking shape.</h3><p>Discover the pieces available now in our other collections.</p><a class="text-link" href="{{ routes.collections_url }}">Explore all categories {% render 'icon', name: 'arrow' %}</a></div>{% endif %}
+    </div>
+  {% endfor %}
+</div>

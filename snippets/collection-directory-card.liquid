@@ -1,0 +1,8 @@
+{% liquid
+  assign category_image = category.featured_image | default: category.products.first.featured_image
+  assign category_count = category.products_count | default: 0
+%}
+<a class="directory-card {% if category_image == blank %}directory-card-text{% endif %}" href="{{ category.url }}">
+  <div class="directory-image">{% if category_image != blank %}{% render 'responsive-image', image: category_image, alt: category.title, sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 50vw' %}{% else %}<span class="directory-monogram" aria-hidden="true">{{ category.title | slice: 0 }}</span>{% endif %}<span class="directory-index" aria-hidden="true">{% if index < 10 %}0{% endif %}{{ index }}</span>{% if category_count == 0 %}<span class="directory-coming">Coming into focus</span>{% endif %}</div>
+  <div class="directory-caption"><div><h2>{{ category.title | escape }}</h2><p>{% if category_count > 0 %}{{ category_count }} {% if category_count == 1 %}piece{% else %}pieces{% endif %}{% else %}New pieces to come{% endif %}</p></div>{% render 'icon', name: 'arrow' %}</div>
+</a>

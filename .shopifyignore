@@ -5,6 +5,9 @@ README.md
 VALIDATION.md
 RESEARCH-ECOMMERCE.md
 DEMO.md
+SHOPIFY-GITHUB.md
+.github/**
+.private/**
 api/**
 public/**
 node_modules/**

@@ -55,7 +55,8 @@ async function handler(req, res) {
       if(pathname==='/cart') {res.statusCode=303;res.setHeader('Location','/checkout');return res.end();}
       res.statusCode=405;return json({description:'This preview does not accept submissions.'});
     }
-    const allowed = pathname==='/' || pathname==='/cart' || pathname==='/search' || pathname==='/search/suggest' || pathname==='/recommendations/products' || pathname==='/collections' || /^\/collections\/(all|soft-structure|everyday-ease|after-hours|seasonal-edit|new-arrivals)$/.test(pathname) || /^\/products\/preview-[0-4]$/.test(pathname) || pages[pathname];
+    const productHandle=pathname.match(/^\/products\/(preview-\d+)$/)?.[1];
+    const allowed = pathname==='/' || pathname==='/cart' || pathname==='/search' || pathname==='/search/suggest' || pathname==='/recommendations/products' || pathname==='/collections' || /^\/collections\/(all|features|tops|dresses|denim|sweaters-knitwear|shoes-bags-accessories|swimwear|luxe|home|soft-structure|everyday-ease|after-hours|seasonal-edit|new-arrivals)$/.test(pathname) || products.some(product=>product.handle===productHandle) || pages[pathname];
     if(!allowed) res.statusCode=404;
     res.setHeader('Content-Type',url.searchParams.has('sections')?'application/json; charset=utf-8':'text/html; charset=utf-8');
     const html=await render(allowed?url.pathname+url.search:'/404',cart);

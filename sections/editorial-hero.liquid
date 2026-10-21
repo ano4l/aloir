@@ -1,3 +1,4 @@
+{% assign storefront_root = routes.root_url | append: '/' | replace: '//', '/' %}
 <section class="editorial-hero" aria-labelledby="HeroTitle-{{ section.id }}">
 
  <div class="hero-panels">{% for i in (1..3) %}{% liquid
@@ -8,14 +9,14 @@
 
  assign fallback = 'hero-' | append: i | append: '.webp'
 
- %}<div class="hero-panel hero-panel-{{ i }}">{% assign hero_loading = 'lazy' %}{% if i == 3 %}{% assign hero_loading = 'eager' %}{% endif %}{% render 'responsive-image', image: image, fallback: fallback, loading: hero_loading, sizes: '(min-width: 768px) 50vw, 100vw', alt: 'Eloir illustrative fashion editorial' %}</div>{% endfor %}</div>
+ %}<div class="hero-panel hero-panel-{{ i }}">{% assign hero_loading = 'lazy' %}{% if i == 3 %}{% assign hero_loading = 'eager' %}{% endif %}{% render 'responsive-image', image: image, fallback: fallback, loading: hero_loading, sizes: '(min-width: 768px) 50vw, 100vw', alt: 'Aloir Apparel illustrative fashion editorial' %}</div>{% endfor %}</div>
 
  <div class="hero-grid" aria-hidden="true"><span></span></div>
 
- <div class="hero-edition" aria-hidden="true"><span>Eloir / The wardrobe edit</span><span>Made for your point of view</span></div>
+ <div class="hero-edition" aria-hidden="true"><span>Aloir Apparel / The wardrobe edit</span><span>Made for your point of view</span></div>
  <div class="hero-copy"><p class="eyebrow hero-eyebrow">A considered point of view</p><h1 id="HeroTitle-{{ section.id }}">{{ section.settings.heading | escape | newline_to_br }}</h1><p>{{ section.settings.text | escape }}</p></div>
 
- <div class="hero-action"><a class="button button-light" href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.label | escape }} {% render 'icon', name: 'arrow' %}</a><span class="hero-action-note">Find the pieces. Make them yours.</span></div>
+ <div class="hero-action"><a class="button button-light" href="{% if section.settings.link != blank %}{{ section.settings.link }}{% else %}{{ storefront_root }}pages/explore{% endif %}">{{ section.settings.label | escape }} {% render 'icon', name: 'arrow' %}</a><span class="hero-action-note">Find the pieces. Make them yours.</span></div>
 
 </section>
 

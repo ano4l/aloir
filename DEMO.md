@@ -1,6 +1,6 @@
-# Eloir · Vercel demo
+# Aloir Apparel · Vercel demo
 
-The root project deploys a demonstration of the Liquid theme to Vercel. It does not connect to Shopify, Trendsi, a payment processor or an email service. The original theme remains in the standard Shopify folders and can still be packaged separately.
+The root project deploys a demonstration of the Liquid theme to Vercel. It does not connect to Shopify, Trendsi, a payment processor or an email service. The original theme remains in the standard Shopify folders and can still be packaged separately. Version 1.5 adds Explore, an all-category directory, Featured and seasonal collection tabs, editable FAQ, and the Aloir Apparel branding.
 
 ## Run locally
 
@@ -40,7 +40,7 @@ The Vercel configuration explicitly bundles the Liquid source files needed by th
 - Checkout preview that creates no order and requests no payment information.
 - Newsletter feedback that clearly states no subscription is collected.
 
-Five illustrative pieces and USD sample prices demonstrate the catalogue. Saved pieces and the bag stay in the visitor's browser. Browsers blocking local storage retain the bag only for the current page. A preview notice and noindex headers identify the site as a demonstration.
+Eleven illustrative pieces and USD sample prices demonstrate the catalogue. Six use merchant catalogue photographs observed in Shopify, so dress, denim and knitwear previews show the correct product types. The image provenance is recorded in `tools/demo/product-imagery.json`; this is a snapshot, not a live supplier or inventory connection. Saved pieces and the bag stay in the visitor's browser. Browsers blocking local storage retain the bag only for the current page. A preview notice and noindex headers identify the site as a demonstration.
 
 ## Commerce boundaries
 

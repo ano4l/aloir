@@ -38,7 +38,7 @@ function defaults(schema) { return Object.fromEntries((schema.settings || []).fi
 const image = (name) => ({ src:`/assets/${name}.webp`, alt:'Illustrative preview image', width:1024, height:1536 });
 const products = ['hero-1','hero-2','hero-3','story','detail'].map((name, i) => ({
   id:i+1, title:['Linen blouse','Tailored jacket','Satin shirt','The tailored trouser','Linen detail'][i] + ' · preview', handle:`preview-${i}`, url:`/products/preview-${i}`, price:9800+i*1200,
-  available:true, has_only_default_variant:false, featured_image:image(name), images:[image(name)], vendor:'Eloir', description:'<p>Illustrative fixture. Replace with published Shopify merchandise.</p>',
+  available:true, has_only_default_variant:false, featured_image:image(name), images:[image(name)], vendor:'Aloir Apparel', description:'<p>Illustrative fixture. Replace with published Shopify merchandise.</p>',
   options:['Size','Colour'],options_with_values:[{name:'Size',values:['Small','Medium'],selected_value:'Small'},{name:'Colour',values:['Ivory'],selected_value:'Ivory'}],
   selected_or_first_available_variant:{id:i+1, title:'Small / Ivory', price:9800+i*1200,available:true}, variants:[{id:i+1,title:'Small / Ivory',options:['Small','Ivory'],price:9800+i*1200,available:true},{id:20+i,title:'Medium / Ivory',options:['Medium','Ivory'],price:10800+i*1200,available:false}], media:[{...image(name),id:i+1,media_type:'image',preview_image:image(name)}]
 }));
@@ -53,18 +53,48 @@ const names=['The linen camisole','The relaxed blazer','The satin shirt','The ta
 products.forEach((product,index)=>{
  product.title=names[index];
  product.featured_image.alt=names[index]+' — illustrative fashion image';
- product.description='<p>A study in '+['simple lines and easy layering','soft structure and relaxed proportions','fluid texture and an open neckline','clean lines and a relaxed silhouette','texture and considered layering'][index]+'. Explore a different way to build your everyday wardrobe.</p><p>Sample piece for the Eloir preview. Images, prices and measurements are illustrative; this item cannot be purchased.</p>';
+ product.description='<p>A study in '+['simple lines and easy layering','soft structure and relaxed proportions','fluid texture and an open neckline','clean lines and a relaxed silhouette','texture and considered layering'][index]+'. Explore a different way to build your everyday wardrobe.</p><p>Sample piece for the Aloir Apparel preview. Images, prices and measurements are illustrative; this item cannot be purchased.</p>';
  product.metafields.custom.size_chart.value.note='Demonstration measurements. Not verified product specifications.';
 });
+// Merchant catalogue photographs keep category previews relevant. Commerce data is
+// deliberately illustrative: the live Shopify store remains authoritative.
+const imagery=require('./product-imagery.json');
+for(const [index,sample] of imagery.products.entries()){
+ const fixture=JSON.parse(JSON.stringify(products[0]));
+ const position=products.length;
+ const src=sample.image.replace(/_40x40@3x(?=\.)/,'');
+ const photo={src,alt:sample.title,width:1024,height:1536};
+ fixture.id=position+1;fixture.title=sample.title;fixture.handle='preview-'+position;fixture.url='/products/'+fixture.handle;
+ fixture.price=14800+index*800;fixture.compare_at_price=null;
+ fixture.featured_image=photo;fixture.images=[photo];fixture.media=[{...photo,id:fixture.id,media_type:'image',preview_image:photo}];
+ fixture.options_with_values=[{name:'Size',values:['Small','Medium'],selected_value:'Small'},{name:'Colour',values:['As pictured'],selected_value:'As pictured'}];
+ fixture.variants=[{id:100+index*2,title:'Small / As pictured',options:['Small','As pictured'],price:fixture.price,available:true},{id:101+index*2,title:'Medium / As pictured',options:['Medium','As pictured'],price:fixture.price,available:true}];
+ fixture.selected_or_first_available_variant=fixture.variants[0];
+ fixture.metafields.custom.complete_the_look={value:[]};
+ fixture.description='<p>Explore the '+sample.category.replaceAll('-',' ')+' selection.</p><p>Merchant catalogue image used in this demonstration. Prices, measurements and availability are illustrative. No purchase or order is processed here.</p>';
+ products.push(fixture);
+}
 const edits=[
+ {handle:'features',title:'Featured',description:'<p>A considered selection, brought together.</p>',indexes:[7,9,10],photo:9},
+ {handle:'tops',title:'Tops',description:'<p>From everyday layers to a different evening mood.</p>',indexes:[0,1,2,4],photo:0},
+ {handle:'dresses',title:'Dresses',description:'<p>Explore the silhouette. Make the occasion your own.</p>',indexes:[9,10],photo:9},
+ {handle:'denim',title:'Denim',description:'<p>A new perspective on everyday dressing.</p>',indexes:[7,8],photo:7},
+ {handle:'sweaters-knitwear',title:'Sweaters & Knitwear',description:'<p>Texture, light layers and a little warmth.</p>',indexes:[5,6],photo:5},
+ {handle:'shoes-bags-accessories',title:'Shoes, Bags & Accessories',description:'<p>Our next selection is taking shape.</p>',indexes:[]},
+ {handle:'swimwear',title:'Swimwear',description:'<p>Our next selection is taking shape.</p>',indexes:[]},
+ {handle:'luxe',title:'Luxe',description:'<p>Our next selection is taking shape.</p>',indexes:[]},
+ {handle:'home',title:'Home',description:'<p>Our next selection is taking shape.</p>',indexes:[]},
  {handle:'soft-structure',title:'Soft structure',description:'<p>Tailoring with room to move.</p>',indexes:[1,3,4],photo:1},
  {handle:'everyday-ease',title:'Everyday ease',description:'<p>Light layers. A little breathing room.</p>',indexes:[0,2,4],photo:0},
  {handle:'after-hours',title:'After hours',description:'<p>Fluid textures for a different kind of evening.</p>',indexes:[0,2],photo:2},
  {handle:'seasonal-edit',title:'The seasonal edit',description:'<p>Familiar favourites, seen differently.</p>',indexes:[0,1,3],photo:2},
  {handle:'new-arrivals',title:'New perspectives',description:'<p>A fresh point of view on getting dressed.</p>',indexes:[4,2,1],photo:4}
-].map(edit=>({...edit,url:'/collections/'+edit.handle,products:edit.indexes.map(i=>products[i]),products_count:edit.indexes.length,featured_image:products[edit.photo].featured_image}));
+].map(edit=>({...edit,url:'/collections/'+edit.handle,products:edit.indexes.map(i=>products[i]),products_count:edit.indexes.length,all_products_count:edit.indexes.length,featured_image:products[edit.photo]?.featured_image}));
 function previewCart(previewCartItems=[]){return {items:previewCartItems,item_count:previewCartItems.reduce((n,item)=>n+item.quantity,0),total_price:previewCartItems.reduce((n,item)=>n+item.final_line_price,0),currency:{iso_code:'USD'},cart_level_discount_applications:[]};}
 const collection={ title:'The collection', url:'/collections/all', description:'<p>Considered silhouettes. Quiet confidence.</p>', products, products_count:products.length, filters:[], sort_options:[{value:'manual',name:'Featured'},{value:'price-ascending',name:'Price, low to high'}],default_sort_by:'manual' };
+const shopCollections=edits.slice(0,9);
+for(const edit of edits)Object.defineProperty(shopCollections,edit.handle,{value:edit,enumerable:false});
+Object.defineProperty(shopCollections,'all',{value:collection,enumerable:false});
 function baseContext(url, cartItems=[]) {
  const settings=JSON.parse(fs.readFileSync(path.join(root,'config/settings_data.json'))).current;
  settings.font_heading={family:'Cormorant Garamond', fallback_families:'serif'}; settings.font_body={family:'Assistant',fallback_families:'sans-serif'};
@@ -99,28 +129,29 @@ function baseContext(url, cartItems=[]) {
  const localCollection={...collection,...activeEdit,products:filteredCollection,products_count:filteredCollection.length,all_products_count:collectionProducts.length,filters:filtersFor(collectionProducts),sort_by:parsedURL.searchParams.get('sort_by')||'manual'};
  const matching=sorted(filterProducts(searched));
  const searchResult={performed:!!query,terms:query,url:'/search',types:['product'],results:matching.map(piece=>({...piece,object_type:'product'})),results_count:matching.length,filters:filtersFor(searched),sort_by:parsedURL.searchParams.get('sort_by')||'relevance',default_sort_by:'relevance',sort_options:[{value:'relevance',name:'Relevance'},{value:'price-ascending',name:'Price, low to high'},{value:'price-descending',name:'Price, high to low'}]};
- return { settings, collections:edits.slice(0,3), shop:{name:'Eloir',money_format:'${{amount}}',customer_accounts_enabled:false,enabled_payment_types:[],shipping_policy:{url:'/policies/shipping-policy',body:'Preview shipping policy'},refund_policy:{url:'/policies/refund-policy',body:'Preview refund policy'},privacy_policy:{url:'/policies/privacy-policy'},terms_of_service:{url:'/policies/terms-of-service'}}, routes:{root_url:'/',cart_url:'/cart',cart_add_url:'/cart/add',search_url:'/search',account_url:'/account',collections_url:'/collections',all_products_collection_url:'/collections/all'},
- request:{locale:{iso_code:'en'},design_mode:false,page_type:parsedURL.pathname.startsWith('/products')?'product':parsedURL.pathname.startsWith('/search')?'search':'index'},cart:previewCart(cartItems),form:{},localization:{available_countries:[],available_languages:[]},page_title:pageData?.[0]||activeEdit?.title||'Eloir — A considered wardrobe',current_page:1,canonical_url:url,collection:localCollection,product, paginate:{pages:1},search:searchResult,predictive_search:{performed:parsedURL.pathname==='/search/suggest',resources:{products:searched}},page:{title:pageData?.[0]||'Our story',content:pageData?.[1]||'<p>Considered pieces for the modern woman.</p>'} };
+ return { settings, collections:shopCollections, shop:{name:'Aloir Apparel',money_format:'${{amount}}',customer_accounts_enabled:false,enabled_payment_types:[],shipping_policy:{url:'/policies/shipping-policy',body:'Preview shipping policy'},refund_policy:{url:'/policies/refund-policy',body:'Preview refund policy'},privacy_policy:{url:'/policies/privacy-policy'},terms_of_service:{url:'/policies/terms-of-service'}}, routes:{root_url:'/',cart_url:'/cart',cart_add_url:'/cart/add',search_url:'/search',account_url:'/account',collections_url:'/collections',all_products_collection_url:'/collections/all'},
+ request:{locale:{iso_code:'en'},design_mode:false,page_type:parsedURL.pathname.startsWith('/products')?'product':parsedURL.pathname.startsWith('/search')?'search':'index'},cart:previewCart(cartItems),form:{},localization:{available_countries:[],available_languages:[]},page_title:pageData?.[0]||activeEdit?.title||'Aloir Apparel — A considered wardrobe',current_page:1,canonical_url:url,collection:localCollection,product, paginate:{pages:1},search:searchResult,predictive_search:{performed:parsedURL.pathname==='/search/suggest',resources:{products:searched}},page:{title:pageData?.[0]||'Our story',content:pageData?.[1]||'<p>Considered pieces for the modern woman.</p>'} };
 }
 async function section(type, id, data, context, fixtures) {
  const raw=fs.readFileSync(path.join(root,'sections',type+'.liquid'),'utf8');
  const schema=JSON.parse(raw.match(/{% schema %}([\s\S]*?){% endschema %}/)[1]);
  const settings={...defaults(schema),...data.settings};
- if(type==='featured-collection')settings.limit=4;
- if (typeof settings.menu === 'string') settings.menu={links:[{title:'Shop',url:'/collections/all',links:edits.slice(0,3).map(edit=>({title:edit.title,url:edit.url}))},{title:'New arrivals',url:'/collections/new-arrivals'},{title:'Our story',url:'/pages/our-story'}]};
- if(type==='category-grid') Object.values(data.blocks||{}).forEach((block,index)=>{block.settings={...block.settings,collection:edits[index]};});
- if(type==='featured-collection')data.blocks=Object.fromEntries(edits.slice(0,3).map((edit,index)=>['demo-'+index,{type:'tab',settings:{label:edit.title,collection:edit}}]));
+ const resolveCollections=(definitions,values)=>{
+  for(const definition of definitions||[])if(definition.type==='collection'&&typeof values[definition.id]==='string')values[definition.id]=context.collections[values[definition.id]]||null;
+  return values;
+ };
+ resolveCollections(schema.settings,settings);
+ for(const block of Object.values(data.blocks||{}))resolveCollections(schema.blocks?.find(definition=>definition.type===block.type)?.settings,block.settings);
+ if (typeof settings.menu === 'string') settings.menu={links:[{title:'Explore',url:'/pages/explore'},{title:'Featured',url:'/collections/features'},{title:'View all',url:'/collections',links:edits.slice(1,5).map(edit=>({title:edit.title,url:edit.url}))}]};
  if(type==='editorial-story')settings.link='/pages/our-story';
  if(type==='footer'){
   const blocks=Object.values(data.blocks||{});
   const care=blocks.find(block=>block.settings.heading==='Customer care');
-  if(care)care.settings.text='<ul role="list"><li><a href="/pages/contact">Contact us</a></li><li><a href="/pages/size-guide">Size guide</a></li><li><a href="/policies/shipping-policy">Delivery</a></li><li><a href="/policies/refund-policy">Returns</a></li></ul>';
+  if(care)care.settings.text='<ul role="list"><li><a href="/pages/faq">FAQ & customer care</a></li><li><a href="/pages/contact">Contact us</a></li><li><a href="/pages/size-guide">Size guide</a></li><li><a href="/policies/shipping-policy">Delivery</a></li><li><a href="/policies/refund-policy">Returns</a></li></ul>';
   const about=blocks.find(block=>block.settings.heading==='About');
   if(about)about.settings.text='<ul role="list"><li><a href="/pages/our-story">Our story</a></li><li><a href="/policies/privacy-policy">Privacy</a></li><li><a href="/policies/terms-of-service">Terms</a></li></ul>';
  }
- if(type==='featured-collection' && fixtures) settings.collection=collection;
  if(type==='seasonal-edit' && fixtures){
-  settings.collection=edits[3];
   if(context.canonical_url.includes('offer=1'))Object.assign(settings,{enable_offer:true,discount_code:'PREVIEW 15',offer_text:'Illustrative seasonal offer — preview only',terms:'<p>Local fixture; no live discount is created or redeemed.</p>'});
  }
  if(type==='main-product' && fixtures)settings.size_guide={title:'Find your fit',url:'/pages/size-guide',content:'<p>Illustrative size-guide fixture. Actual measurements must come from the imported product.</p>'};
@@ -148,13 +179,13 @@ async function render(url, cartItems=[]) {
   const result={};for(const type of parsedURL.searchParams.get('sections').split(','))if(/^[a-z0-9-]+$/.test(type)&&fs.existsSync(path.join(root,'sections',type+'.liquid')))result[type]=await section(type,type,{settings:{}},context,fixtures);
   return JSON.stringify(result);
  }
- const template=url.startsWith('/products')?'product':parsedURL.pathname==='/collections'?'list-collections':url.startsWith('/collections/')?'collection':url.startsWith('/cart')?'cart':url.startsWith('/pages')||url.startsWith('/policies')||url.startsWith('/checkout')?'page':url.startsWith('/search')?'search':url==='/404'?'404':'index';
+ const template=url.startsWith('/products')?'product':parsedURL.pathname==='/collections'?'list-collections':url.startsWith('/collections/')?'collection':url.startsWith('/cart')?'cart':parsedURL.pathname==='/pages/explore'&&fs.existsSync(path.join(root,'templates/page.explore.json'))?'page.explore':parsedURL.pathname==='/pages/faq'&&fs.existsSync(path.join(root,'templates/page.faq.json'))?'page.faq':url.startsWith('/pages')||url.startsWith('/policies')||url.startsWith('/checkout')?'page':url.startsWith('/search')?'search':url==='/404'?'404':'index';
  const data=JSON.parse(fs.readFileSync(path.join(root,'templates',template+'.json'),'utf8'));
  let body=''; for(const id of data.order) body+=await section(data.sections[id].type,id,data.sections[id],context,fixtures);
  let layout=source(fs.readFileSync(path.join(root,'layout/theme.liquid'),'utf8'));
  layout=layout.replace(/{% sections 'header-group' %}/g,await group('header-group',context,fixtures)).replace(/{% sections 'footer-group' %}/g,await group('footer-group',context,fixtures));
  const html=await engine.parseAndRender(layout,{...context,content_for_layout:body});
- return html.replace('</head>', '<meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/demo/demo.css"><script src="/demo/demo.js"></script></head>').replace('<body>', '<body><div class="demo-notice">Eloir preview <span>Sample collection · no payments or orders</span></div>');
+ return html.replace('</head>', '<meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/demo/demo.css"><script src="/demo/demo.js"></script></head>').replace('<body>', '<body><div class="demo-notice">Aloir Apparel preview <span>Sample collection · no payments or orders</span></div>');
 }
 
 module.exports={compile,render,products,previewCart};

@@ -1,0 +1,35 @@
+{
+  "source": "Merchant Shopify product thumbnails, observed 2026-10-21; demo prices and availability remain illustrative.",
+  "products": [
+    {
+      "title": "Off-Shoulder Openwork Cropped Sweater",
+      "category": "sweaters-knitwear",
+      "image": "https://cdn.shopify.com/s/files/1/1000/5119/0066/files/e8da9449ce474c3b8f7667e2e02130c5-Max-Origin_40x40@3x.webp?v=1792594978"
+    },
+    {
+      "title": "Slim-Fit Deep V-Neck Cable Knit Sweater",
+      "category": "sweaters-knitwear",
+      "image": "https://cdn.shopify.com/s/files/1/1000/5119/0066/files/9b721a8ed9bebb7a5453f1c809577e9f-4a50dc20-v3-Max-Origin_40x40@3x.webp?v=1792594767"
+    },
+    {
+      "title": "Washed High-Waist Wide-Leg Jeans",
+      "category": "denim",
+      "image": "https://cdn.shopify.com/s/files/1/1000/5119/0066/files/86703912e1624cc4b75dd91fc1b185e4-Max-Origin_40x40@3x.webp?v=1792594329"
+    },
+    {
+      "title": "High-Waisted Flare Leg Jeans with Front Pockets",
+      "category": "denim",
+      "image": "https://cdn.shopify.com/s/files/1/1000/5119/0066/files/85b827a3-f861-4c95-9e9b-fec75be2a327-Max-Origin_40x40@3x.webp?v=1792594498"
+    },
+    {
+      "title": "Sleeveless High-Slit Evening Maxi Dress",
+      "category": "dresses",
+      "image": "https://cdn.shopify.com/s/files/1/1000/5119/0066/files/dc57d5138740a9f09533f519fc0fc127-70c120ce-v3-Max-Origin_40x40@3x.webp?v=1792594161"
+    },
+    {
+      "title": "Bodycon Spaghetti Strap Maxi Dress",
+      "category": "dresses",
+      "image": "https://cdn.shopify.com/s/files/1/1000/5119/0066/files/97f570717295bd6f20174477237ac0c7-6b32fb04-v3-Max-Origin_40x40@3x.webp?v=1792593923"
+    }
+  ]
+}

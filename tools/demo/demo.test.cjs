@@ -42,3 +42,18 @@ test('Vercel configuration bundles Liquid sources and demo never modifies theme 
  const config=JSON.parse(fs.readFileSync('vercel.json'));assert.equal(config.outputDirectory,'public');assert.match(config.functions['api/index.js'].includeFiles,/sections/);
  assert.match(fs.readFileSync('tools/package-theme.ps1','utf8'),/layout\/theme.liquid/);
 });
+test('collection-led navigation exposes Explore, featured merchandise, categories and FAQ',async()=>{
+ const home=await render('/');
+ assert.match(home,/Aloir Apparel/);
+ assert.match(home,/href="\/pages\/explore"/);
+ assert.match(home,/href="\/collections\/features"/);
+ assert.match(home,/href="\/collections"/);
+ assert.equal((home.match(/data-collection-panel /g)||[]).length,8);
+ assert.match(home,/Featured<\/h3><span>3 pieces/);
+ const directory=await render('/collections');
+ for(const name of ['Tops','Dresses','Denim','Sweaters &amp; Knitwear','Swimwear','Luxe','Home','Shoes, Bags &amp; Accessories'])assert.ok(directory.includes(name),name);
+ assert.doesNotMatch(directory,/>Home page</);
+ for(const route of ['/pages/explore','/pages/faq','/collections/features','/collections/swimwear'])assert.equal((await fetch(origin+route)).status,200,route);
+ const faq=await render('/pages/faq');assert.match(faq,/Shopping &amp; fit|Shopping & fit/);assert.match(faq,/<details>/);
+ const empty=await render('/collections/swimwear');assert.doesNotMatch(empty,/<article class="product-card">/);
+});

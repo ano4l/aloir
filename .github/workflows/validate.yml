@@ -1,0 +1,21 @@
+name: Validate Eloir theme and demo
+on:
+  push:
+    branches: [main, shopify]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  storefront:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Validate Shopify Liquid and schemas
+        run: npx --yes @shopify/cli@4.9.4 theme check --path . --fail-level error --no-input --no-color

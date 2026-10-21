@@ -1,0 +1,2 @@
+{% assign storefront_root = routes.root_url | append: '/' | replace: '//', '/' %}
+<a href="{{ storefront_root }}pages/explore" {% if page.handle == 'explore' %}aria-current="page"{% endif %}>Explore</a><a href="{{ storefront_root }}collections/features" {% if collection.handle == 'features' %}aria-current="page"{% endif %}>Featured</a><a href="{{ routes.collections_url }}" {% if template.name == 'list-collections' %}aria-current="page"{% endif %}>View all</a>

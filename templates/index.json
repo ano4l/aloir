@@ -17,22 +17,25 @@
         "soft": {
           "type": "category",
           "settings": {
-            "title": "Soft structure",
-            "description": "Tailoring with room to move."
+            "title": "Tops",
+            "description": "The first layer of your own point of view.",
+            "collection": "tops"
           }
         },
         "ease": {
           "type": "category",
           "settings": {
-            "title": "Everyday ease",
-            "description": "The pieces that make a day feel effortless."
+            "title": "Denim",
+            "description": "Your everyday foundation, made personal.",
+            "collection": "denim"
           }
         },
         "evening": {
           "type": "category",
           "settings": {
-            "title": "After hours",
-            "description": "A different mood. The same sense of self."
+            "title": "Dresses",
+            "description": "A different mood. The same sense of self.",
+            "collection": "dresses"
           }
         }
       },

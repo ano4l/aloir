@@ -8,6 +8,54 @@
   const status = message => { const node = document.querySelector('[data-global-status]'); if (node) node.textContent = message; };
   const parse = html => new DOMParser().parseFromString(html,'text/html');
   let cartBusy = false;
+  let pendingProductAdds = 0;
+  function syncCartPending(){
+    const pending=cartBusy||pendingProductAdds>0;
+    document.querySelectorAll('.cart-form').forEach(form=>{
+      form.setAttribute('aria-busy',String(pending));
+      form.querySelectorAll('[name=checkout],[data-cart-step],[data-cart-quantity]').forEach(control=>{
+        control.disabled=pending;
+        if(control.name==='checkout')control.textContent=pending?'Updating your bag…':'Continue to checkout';
+      });
+    });
+  }
+  function initCollectionSwitchers(scope=document){
+    scope.querySelectorAll('[data-collection-switcher]').forEach(switcher=>{
+      if(switcher.dataset.initialized)return;
+      const tabs=[...switcher.querySelectorAll('[data-collection-tab]')];
+      const panels=[...switcher.querySelectorAll('[data-collection-panel]')];
+      if(!tabs.length||tabs.length!==panels.length)return;
+      switcher.dataset.initialized='true';
+      switcher.querySelector('[data-collection-tablist]').setAttribute('role','tablist');
+      const activate=(index,focus=false)=>{
+        tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;});
+        panels.forEach((panel,i)=>{panel.hidden=i!==index;});
+        if(focus)tabs[index].focus({preventScroll:true});
+      };
+      tabs.forEach((tab,index)=>{
+        tab.setAttribute('role','tab');panels[index].setAttribute('role','tabpanel');panels[index].tabIndex=0;
+        tab.addEventListener('click',event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();activate(index);});
+        tab.addEventListener('keydown',event=>{
+          let target=index;
+          if(event.key==='ArrowRight')target=(index+1)%tabs.length;
+          else if(event.key==='ArrowLeft')target=(index-1+tabs.length)%tabs.length;
+          else if(event.key==='Home')target=0;
+          else if(event.key==='End')target=tabs.length-1;
+          else return;
+          event.preventDefault();activate(target,true);
+        });
+      });
+      activate(0);switcher.classList.add('is-enhanced');
+    });
+  }
+  initCollectionSwitchers();
+  document.addEventListener('shopify:section:load',event=>initCollectionSwitchers(event.target));
+  document.addEventListener('submit',event=>{
+    if(event.target.matches('.cart-form')&&event.submitter?.name==='checkout'){
+      if(cartBusy||pendingProductAdds){event.preventDefault();status('Please wait while your bag finishes updating.');return;}
+      event.submitter.textContent='Opening checkout…';event.target.setAttribute('aria-busy','true');
+    }
+  });
   const motionBehavior=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
   const closeDialog = dialog => { if (dialog?.open) dialog.close(); };
   const openDialog = (dialog,opener=document.activeElement) => {
@@ -63,6 +111,7 @@
       if(pageFresh)page.innerHTML=pageFresh.innerHTML;
     }
     const cart=await request('cart.js');
+    syncCartPending();
     document.querySelectorAll('[data-cart-count]').forEach(node=>{node.textContent=cart.item_count;});
     if(open)openDialog(document.getElementById('CartDrawer'));
     status('Shopping bag updated. '+cart.item_count+' items.');
@@ -80,6 +129,7 @@
     event.preventDefault();
     const button=form.querySelector('[type=submit]');
     if(!button||button.disabled)return;
+    pendingProductAdds++;syncCartPending();
     const message=form.querySelector('.form-message');
     const original=button.textContent;
     button.disabled=true;button.textContent='Adding…';form.setAttribute('aria-busy','true');
@@ -98,6 +148,7 @@
       status(feedback);
     }
     finally{
+      pendingProductAdds--;syncCartPending();
       const section=form.closest('[data-product-section]');
       if(section){
         const selector=section.querySelector('[data-variant-select]');
@@ -115,6 +166,7 @@
   async function changeCart(key,quantity,trigger){
     if(cartBusy)return;
     cartBusy=true;
+    syncCartPending();
     const form=trigger.closest('.cart-form');
     const focusId=trigger.id;
     const cartScope=trigger.closest('[data-cart-page-content],[data-cart-drawer-content]');
@@ -141,7 +193,7 @@
       const equivalent=[...(scope?.querySelectorAll('[data-key]')||[])].find(node=>node.dataset.key===key&&node.matches('[data-cart-quantity]'));
       (equivalent||scope?.querySelector('.cart-summary button,.empty-state a')||trigger)?.focus({preventScroll:true});
     }
-    finally{clearTimeout(delayed);cartBusy=false;form?.removeAttribute('aria-busy');form?.classList.remove('cart-working');}
+    finally{clearTimeout(delayed);cartBusy=false;form?.classList.remove('cart-working');syncCartPending();}
   }
   document.addEventListener('click',event=>{
     const remove=event.target.closest('[data-cart-remove]');

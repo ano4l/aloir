@@ -19,9 +19,10 @@ compile();
 fs.writeFileSync(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
 // Render representative pages during the build so invalid Liquid fails deployment.
 (async () => {
-  for (const url of ['/', '/collections/all', '/products/preview-0', '/search?q=linen', '/cart', '/pages/our-story', '/collections']) {
+  const routes=['/', '/collections/all', '/products/preview-0', '/search?q=linen', '/cart', '/pages/our-story', '/collections', '/pages/explore', '/pages/faq', '/collections/features', '/collections/tops', '/collections/dresses', '/collections/denim', '/collections/sweaters-knitwear', '/collections/swimwear'];
+  for (const url of routes) {
     const html = await render(url);
     if (!html.includes('MainContent') || /Liquid error:/.test(html)) throw new Error('Invalid rendered page: ' + url);
   }
-  console.log('Eloir demo built: static assets, compiled Liquid and 7 route smoke checks.');
+  console.log('Aloir Apparel demo built: static assets, compiled Liquid and '+routes.length+' route smoke checks.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

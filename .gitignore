@@ -8,3 +8,4 @@ tools/demo/.render/
 tools/demo/compiled/
 .vercel/
 artifacts/
+.private/

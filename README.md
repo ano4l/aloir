@@ -1,13 +1,15 @@
-# Eloir — Shopify editorial theme & Vercel demo 1.4
+# Aloir Apparel — Shopify theme & Vercel demo 1.5
 
 A bespoke Online Store 2.0 theme built with Liquid, JSON templates, CSS and vanilla JavaScript. The homepage follows the supplied photographic triptych and asymmetric editorial composition. Original editorial images are illustrative brand imagery, not photographs of imported merchandise.
 
 The repository also includes an isolated Vercel demo with sample products, browser-persisted bag, search and filters. Run `npm ci` and `npm run dev`, then open http://127.0.0.1:9393. Run `npm test` and `npm run build` before deployment. See [DEMO.md](DEMO.md) for Vercel import settings and demo boundaries.
 
+Version 1.5 organizes the storefront around the merchant's real collections: Featured (`features`), Tops, Dresses, Denim and Sweaters & Knitwear, plus the complete category directory. It adds Explore and FAQ page templates, keyboard-accessible collection and seasonal tabs, consistent Aloir Apparel branding and safe checkout hand-off during bag updates. See [SHOPIFY-GITHUB.md](SHOPIFY-GITHUB.md) for branch connection and page setup. GitHub Actions validate both the theme and the demo.
+
 ## Install
 
 1. Upload `dist/eloir-theme.zip` in Shopify admin → Online Store → Themes → Import theme → Upload zip file. Keep it unpublished while configuring and reviewing.
-2. Open Customize. In Theme settings, set the Eloir wordmark or upload a logo, choose fonts and colours, and upload a favicon. Set the store's name separately in Shopify Settings → General.
+2. Open Customize. In Theme settings, set the Aloir Apparel wordmark or upload a logo, choose fonts and colours, and upload a favicon. Set the store's name separately in Shopify Settings → General.
 3. Import products through Trendsi and publish them to the Online Store channel. Add them to actual Shopify collections. The theme reads Shopify products, variants, prices, images and availability; supplier sync and fulfillment remain Trendsi's responsibility.
 4. On the homepage, select a real collection in **Featured collection**. Add collection category blocks for New Arrivals, Dresses, Sets, Tops, Knitwear and Outerwear as needed. Empty unconfigured collections show an honest empty state.
 5. Replace each hero panel and both story images using their image settings. Uploaded images use Shopify responsive image delivery. Packaged editorial images are defaults only. Adjust headings, descriptions and destinations in the same sections.

@@ -34,7 +34,7 @@
         event.preventDefault();
         let feedback=event.target.querySelector('.demo-feedback');
         if(!feedback){feedback=document.createElement('p');feedback.className='demo-feedback';feedback.setAttribute('role','status');event.target.append(feedback);}
-        feedback.textContent='Thanks for exploring Eloir. Subscriptions are not collected in this preview.';
+        feedback.textContent='Thanks for exploring Aloir Apparel. Subscriptions are not collected in this preview.';
       }
       if(event.target.matches('form[action="/cart"]')&&event.submitter?.name==='checkout'){
         event.preventDefault();location.assign('/checkout');

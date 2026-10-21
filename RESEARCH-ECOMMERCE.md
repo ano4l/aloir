@@ -142,3 +142,23 @@ Current theme strengths: native product/cart forms, predictive search, stock-awa
 Concrete gaps found in source: `sections/main-search.liquid` renders a product grid and pagination without filter/sort controls; `snippets/filters.liquid` assumes collection context and would need query-preserving behaviour before reuse on search. Its applied chips currently reside in the controls block that moves into the mobile filter dialog. Product sizing is driven by a shared guide and optional fit text rather than a structured per-product measurement table. `sections/related-products.liquid` requests related recommendations, not a separate complementary outfit rail.
 
 Suggested sequence: catalogue/market foundation → search and category discovery → product confidence → campaign and live checkout QA → measurement-driven refinements. No paid discovery app should be selected solely because the assortment is called large; first establish actual collection sizes, search requirements and native-system shortcomings.
+
+
+## Collection-led Aloir Apparel update · 21 October 2026
+
+Current research was reviewed alongside the merchant's actual Shopify catalogue. The decisions below distinguish implementation guidance from supplier, payment and shipping arrangements.
+
+| Finding | Applied decision | Primary source |
+| --- | --- | --- |
+| Category gateways help shoppers understand the available range before committing to a product list. | Explore highlights populated clothing categories; View all is the complete category directory, separate from all products. | [Baymard category pages](https://baymard.com/blog/ecommerce-category-page) |
+| Apparel shoppers need confidence in appearance, fit and size. | Preserve actual product photography, selected-size availability and measurement guidance. Never use editorial imagery as evidence of a real garment's composition or fit. | [Baymard apparel research](https://baymard.com/research-articles/apparel-5-best-practices) |
+| Product lists, sorting and filters must work together. | Keep Shopify product filters and query-preserving sort. Collection tabs explicitly show their scope and link to the matching collection. Empty collections offer a path back to stocked categories. | [Baymard product-list research](https://baymard.com/research/ecommerce-product-lists) |
+| Checkout friction includes unclear costs and unnecessary account requirements. | Retain native checkout, clear subtotal and delivery-cost context, and block checkout while a bag mutation is pending. Shopify's existing one-page layout and address completion remain enabled. | [Baymard checkout research](https://baymard.com/research-articles/current-state-of-checkout-ux) |
+| Theme and checkout customization are separate systems. | Bag styling ships with Liquid. Checkout typography and colors are configured through Shopify's checkout editor, within the store's available controls. | [Shopify checkout documentation](https://help.shopify.com/en/manual/checkout-settings/customize-checkout-configurations) |
+| Shopify's GitHub integration reads standard root theme folders and commits editor changes back to the connected branch. | Keep root theme structure, prepare a dedicated shopify branch, validate before pushing and preserve merchant commits. | [Shopify GitHub integration](https://shopify.dev/docs/storefronts/themes/tools/github) |
+
+The verified public collection handles are features, tops, dresses, denim, sweaters-knitwear, shoes-bags-accessories, swimwear, luxe and home. The merchant's Features collection appears under the customer-facing label Featured. The internal Home page collection is hidden from the category directory. Empty categories are not presented as stocked.
+
+Seasonal discovery uses Light layers, Knitwear and Evening dressing. These are styling paths to existing collections, not invented inventory, discounts or assumptions about the shopper's hemisphere. FAQ answers are merchant-editable and do not promise an unverified return window, delivery time or international destination.
+
+The customer-facing brand was explicitly confirmed as Aloir Apparel. The Vercel demo retains illustrative product data; actual Shopify merchandising stays authoritative. Checkout branding does not activate a gateway or prove that a destination has a shipping rate. No live payment or order was submitted during design checks.
