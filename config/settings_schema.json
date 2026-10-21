@@ -70,7 +70,7 @@
         "type": "font_picker",
         "id": "font_heading",
         "label": "Headings",
-        "default": "cormorant_garamond_n4"
+        "default": "cormorant_n4"
       },
       {
         "type": "font_picker",
