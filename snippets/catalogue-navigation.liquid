@@ -1,0 +1,6 @@
+<nav class="catalogue-navigation" aria-label="Clothing categories">
+  <a href="{{ routes.all_products_collection_url }}" {% if collection.handle == 'all' %}aria-current="page"{% endif %}>All pieces</a>
+  {% assign navigation_handles = 'tops,dresses,denim,sweaters-knitwear' | split: ',' %}
+  {% for navigation_handle in navigation_handles %}{% assign navigation_collection = collections[navigation_handle] %}{% if navigation_collection != blank and navigation_collection.all_products_count > 0 %}<a href="{{ navigation_collection.url }}" {% if collection.handle == navigation_handle %}aria-current="page"{% endif %}>{{ navigation_collection.title | escape }}</a>{% endif %}{% endfor %}
+  <a href="{{ routes.collections_url }}">All categories {% render 'icon', name: 'arrow' %}</a>
+</nav>

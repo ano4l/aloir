@@ -1,0 +1,9 @@
+{% assign policy_root = routes.root_url | append: '/' | replace: '//', '/' %}
+<nav class="policy-navigation" aria-label="Store policies">
+  <a href="{{ policy_root }}pages/customer-care"{% if policy_kind == 'overview' %} aria-current="page"{% endif %}>Customer care</a>
+  <a href="{{ shop.shipping_policy.url | default: '/pages/delivery-policy' }}"{% if policy_kind == 'delivery' %} aria-current="page"{% endif %}>Delivery policy</a>
+  <a href="{{ shop.refund_policy.url | default: '/pages/refund-policy' }}"{% if policy_kind == 'refund' %} aria-current="page"{% endif %}>Refund &amp; returns</a>
+  <a href="{{ policy_root }}pages/cancellation-policy"{% if policy_kind == 'cancellation' %} aria-current="page"{% endif %}>Cancellation policy</a>
+  <a href="{{ shop.privacy_policy.url | default: '/pages/privacy-policy' }}"{% if policy_kind == 'privacy' %} aria-current="page"{% endif %}>Privacy policy</a>
+  <a href="{{ shop.terms_of_service.url | default: '/pages/terms-and-conditions' }}"{% if policy_kind == 'terms' %} aria-current="page"{% endif %}>Terms &amp; conditions</a>
+</nav>

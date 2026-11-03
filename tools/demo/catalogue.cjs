@@ -11,4 +11,18 @@ const pages = {
  '/policies/terms-of-service': ['About this preview', '<p>Aloir Apparel is presented here as an interactive fashion-store demonstration. Sample products, prices, measurements and offers are illustrative. No payment, order, account registration or email subscription is processed.</p>'],
  '/checkout': ['A beautiful beginning.', '<p>Your shopping journey ends here for now. This is an Aloir Apparel demonstration: no payment is taken and no order is created.</p><p>Your selected pieces remain in this browser so you can keep exploring.</p><p><a class="button" href="/cart">Return to your bag</a> <a class="text-link" href="/collections/all">Continue exploring →</a></p>']
 };
-module.exports = { pages };
+// The same policy snippets power Shopify page templates and this preview.
+const policyPages = {
+ '/policies/shipping-policy': ['Delivery policy', 'delivery-policy'],
+ '/policies/refund-policy': ['Refund & returns policy', 'refund-policy'],
+ '/policies/privacy-policy': ['Privacy policy', 'privacy-policy'],
+ '/policies/terms-of-service': ['Terms & conditions', 'terms-and-conditions'],
+ '/pages/delivery-policy': ['Delivery policy', 'delivery-policy'],
+ '/pages/refund-policy': ['Refund & returns policy', 'refund-policy'],
+ '/pages/privacy-policy': ['Privacy policy', 'privacy-policy'],
+ '/pages/terms-and-conditions': ['Terms & conditions', 'terms-and-conditions'],
+ '/pages/cancellation-policy': ['Cancellation policy', 'cancellation-policy'],
+ '/pages/customer-care': ['Customer care', 'customer-care']
+};
+for (const [route, [title]] of Object.entries(policyPages)) pages[route] = [title, ''];
+module.exports = { pages, policyPages };

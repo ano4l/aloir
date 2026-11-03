@@ -1,0 +1,17 @@
+{% assign policy_kind = section.settings.policy_kind %}
+<section class="section policy-page" aria-labelledby="PolicyHeading-{{ section.id }}">
+  <aside class="policy-sidebar"><p class="eyebrow">Here to help</p>{% render 'policy-navigation', policy_kind: policy_kind %}<a class="text-link" href="{{ routes.collections_url }}">Back to the wardrobe {% render 'icon', name: 'arrow' %}</a></aside>
+  <article class="policy-article"><header class="policy-heading"><p class="eyebrow">Aloir Apparel / Customer care</p><h1 id="PolicyHeading-{{ section.id }}">{{ page.title | escape }}</h1><p class="policy-updated">Last updated November 3, 2026</p></header><div class="rte policy-body">
+  {% case policy_kind %}
+    {% when 'delivery' %}{% render 'policy-delivery' %}
+    {% when 'refund' %}{% render 'policy-refund' %}
+    {% when 'cancellation' %}{% render 'policy-cancellation' %}
+    {% when 'privacy' %}{% comment %}theme-check-disable UndefinedObject{% endcomment %}{% render 'policy-privacy', demo_preview: demo_preview %}{% comment %}theme-check-enable UndefinedObject{% endcomment %}
+    {% when 'terms' %}{% render 'policy-terms' %}
+    {% else %}{{ page.content }}
+  {% endcase %}
+  </div><div class="policy-help"><h2>Let’s make it simple.</h2><p>For help with delivery, a return or your order, {% render 'policy-contact' %}. Please include your order number.</p></div></article>
+</section>
+{% schema %}
+{"name":"Store policy","settings":[{"type":"select","id":"policy_kind","label":"Policy","options":[{"value":"delivery","label":"Delivery"},{"value":"refund","label":"Refund & returns"},{"value":"cancellation","label":"Cancellation"},{"value":"privacy","label":"Privacy"},{"value":"terms","label":"Terms & conditions"}],"default":"delivery"}]}
+{% endschema %}

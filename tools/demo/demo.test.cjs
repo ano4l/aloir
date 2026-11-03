@@ -57,3 +57,19 @@ test('collection-led navigation exposes Explore, featured merchandise, categorie
  const faq=await render('/pages/faq');assert.match(faq,/Shopping &amp; fit|Shopping & fit/);assert.match(faq,/<details>/);
  const empty=await render('/collections/swimwear');assert.doesNotMatch(empty,/<article class="product-card">/);
 });
+test('all five policies and customer care resolve with consistent supplier rules',async()=>{
+ const {policyPages}=require('./catalogue.cjs');
+ for(const route of Object.keys(policyPages)){
+  const response=await fetch(origin+route);assert.equal(response.status,200,route);
+  const html=await response.text();assert.doesNotMatch(html.slice(html.indexOf('<main'),html.indexOf('</main>')),/Liquid error:|{%|{{/);
+  assert.match(html,/Last updated November 3, 2026|Consider it/);
+ }
+ const refund=await render('/policies/refund-policy');
+ assert.match(refund,/7 calendar days/);assert.match(refund,/5–7 business days/);assert.match(refund,/20%/);
+ const cancellation=await render('/pages/cancellation-policy');
+ assert.match(cancellation,/24 hours/);assert.match(cancellation,/not guaranteed/);assert.match(cancellation,/processing or has shipped/);
+ const delivery=await render('/policies/shipping-policy');assert.match(delivery,/2–5 business days/);assert.match(delivery,/prompt refund/);
+ const privacy=await render('/policies/privacy-policy');assert.match(privacy,/About this preview/);assert.match(privacy,/Shopify Consumer Privacy Policy/);
+ const home=await render('/');const footer=home.slice(home.indexOf('<footer'));
+ for(const route of ['/pages/customer-care','/pages/cancellation-policy','/policies/shipping-policy','/policies/refund-policy','/policies/privacy-policy','/policies/terms-of-service'])assert.ok(footer.includes(route),route);
+});

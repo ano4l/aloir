@@ -1,2 +1,16 @@
 {% assign storefront_root = routes.root_url | append: '/' | replace: '//', '/' %}
-<a href="{{ storefront_root }}pages/explore" {% if page.handle == 'explore' %}aria-current="page"{% endif %}>Explore</a><a href="{{ storefront_root }}collections/features" {% if collection.handle == 'features' %}aria-current="page"{% endif %}>Featured</a><a href="{{ routes.collections_url }}" {% if template.name == 'list-collections' %}aria-current="page"{% endif %}>View all</a>
+<details class="nav-dropdown catalogue-menu">
+  <summary>Shop <span aria-hidden="true">⌄</span></summary>
+  <div class="nav-dropdown-panel catalogue-menu-panel">
+    <div class="catalogue-menu-links">
+      <p class="eyebrow">The wardrobe</p>
+      <a class="catalogue-menu-all" href="{{ routes.all_products_collection_url }}">Shop all pieces {% render 'icon', name: 'arrow' %}</a>
+      {% assign navigation_handles = 'tops,dresses,denim,sweaters-knitwear' | split: ',' %}
+      {% for navigation_handle in navigation_handles %}{% assign navigation_collection = collections[navigation_handle] %}{% if navigation_collection != blank %}<a href="{{ navigation_collection.url }}" {% if collection.handle == navigation_handle %}aria-current="page"{% endif %}>{{ navigation_collection.title | escape }}</a>{% endif %}{% endfor %}
+      <a class="catalogue-menu-directory" href="{{ routes.collections_url }}">All categories {% render 'icon', name: 'arrow' %}</a>
+    </div>
+    <div class="catalogue-menu-edit"><p class="eyebrow">A considered selection</p><a href="{{ storefront_root }}collections/features"><img src="{{ 'hero-2.webp' | asset_url }}" width="360" height="450" loading="lazy" alt="Aloir Apparel editorial styling"><span>Discover the edit {% render 'icon', name: 'arrow' %}</span></a></div>
+  </div>
+</details>
+<a href="{{ storefront_root }}collections/features" {% if collection.handle == 'features' %}aria-current="page"{% endif %}>Featured</a>
+<a href="{{ storefront_root }}pages/explore" {% if page.handle == 'explore' %}aria-current="page"{% endif %}>Explore</a>

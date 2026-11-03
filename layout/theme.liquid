@@ -17,13 +17,15 @@
     :root{--ivory:{{ settings.color_background }};--beige:{{ settings.color_secondary }};--taupe:{{ settings.color_accent }};--ink:{{ settings.color_text }};--border:{{ settings.color_border }};--serif:{{ settings.font_heading.family }},{{ settings.font_heading.fallback_families }};--sans:{{ settings.font_body.family }},{{ settings.font_body.fallback_families }}}
   {% endstyle %}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ 'storefront.css' | asset_url | stylesheet_tag }}
+  {{ 'policies.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   <script>window.Eloir={root:{{ routes.root_url | json }},moneyFormat:{{ shop.money_format | json }},currency:{{ cart.currency.iso_code | json }},locale:{{ request.locale.iso_code | json }}};</script>
 </head>
 <body>
   <a class="skip-link" href="#MainContent">Skip to content</a>
   {% sections 'header-group' %}
-  <main id="MainContent" tabindex="-1">{{ content_for_layout }}</main>
+  <main id="MainContent" tabindex="-1">{{ content_for_layout }}{% if request.path == shop.privacy_policy.url %}{% render 'privacy-fulfillment-notice' %}{% endif %}</main>
   {% sections 'footer-group' %}
   {% render 'cart-drawer' %}
   <dialog id="WishlistDialog" class="side-dialog" aria-label="Saved pieces"><div class="drawer-heading"><h2>Saved pieces</h2><button type="button" data-close-dialog aria-label="Close saved pieces">{% render 'icon', name: 'close' %}</button></div><div data-wishlist-items></div></dialog>

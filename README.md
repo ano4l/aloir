@@ -1,4 +1,6 @@
-# Aloir Apparel — Shopify theme & Vercel demo 1.5
+# Aloir Apparel — Shopify theme & Vercel demo
+
+The November 2026 storefront refinement adds a photographic Shop menu, category navigation on collection pages, an ordered catalogue directory with compact upcoming categories, refined responsive layouts, a customer-care hub and five policy pages. Policy research and Shopify setup are documented in [POLICY-SOURCES.md](POLICY-SOURCES.md). The existing native automated Shopify privacy policy is preserved, with a theme supplement for fulfillment and saved pieces.
 
 A bespoke Online Store 2.0 theme built with Liquid, JSON templates, CSS and vanilla JavaScript. The homepage follows the supplied photographic triptych and asymmetric editorial composition. Original editorial images are illustrative brand imagery, not photographs of imported merchandise.
 

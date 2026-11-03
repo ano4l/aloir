@@ -20,6 +20,7 @@ fs.writeFileSync(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n'
 // Render representative pages during the build so invalid Liquid fails deployment.
 (async () => {
   const routes=['/', '/collections/all', '/products/preview-0', '/search?q=linen', '/cart', '/pages/our-story', '/collections', '/pages/explore', '/pages/faq', '/collections/features', '/collections/tops', '/collections/dresses', '/collections/denim', '/collections/sweaters-knitwear', '/collections/swimwear'];
+  routes.push(...Object.keys(require('./catalogue.cjs').policyPages));
   for (const url of routes) {
     const html = await render(url);
     if (!html.includes('MainContent') || /Liquid error:/.test(html)) throw new Error('Invalid rendered page: ' + url);

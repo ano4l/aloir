@@ -1,0 +1,13 @@
+{% assign policy_root = routes.root_url | append: '/' | replace: '//', '/' %}
+<section class="section customer-care-page" aria-labelledby="CareHeading-{{ section.id }}">
+<header class="care-intro"><div><p class="eyebrow">A little clarity, at every step</p><h1 id="CareHeading-{{ section.id }}">Consider it<br>taken care of.</h1></div><p>From finding your fit to following your delivery. Everything you need for a more considered shopping experience.</p></header>
+<div class="care-grid">
+<a class="care-card" href="{{ shop.shipping_policy.url | default: '/pages/delivery-policy' }}"><span class="eyebrow">01 / On its way</span><h2>Delivery</h2><p>US fulfillment, delivery estimates, tracking and shipping charges.</p><span class="text-link">Delivery policy {% render 'icon', name: 'arrow' %}</span></a>
+<a class="care-card" href="{{ shop.refund_policy.url | default: '/pages/refund-policy' }}"><span class="eyebrow">02 / Finding the right fit</span><h2>Refunds &amp; returns</h2><p>Eligibility, the return window and how to request a refund.</p><span class="text-link">Refund policy {% render 'icon', name: 'arrow' %}</span></a>
+<a class="care-card" href="{{ policy_root }}pages/cancellation-policy"><span class="eyebrow">03 / A change of plans</span><h2>Cancellations</h2><p>What to do when you need to cancel or change an order.</p><span class="text-link">Cancellation policy {% render 'icon', name: 'arrow' %}</span></a>
+</div>
+<div class="care-bottom"><div><p class="eyebrow">The finer details</p>{% render 'policy-navigation', policy_kind: 'overview' %}</div><div class="care-contact"><h2>A little more help?</h2><p>Find answers in our FAQ, learn how to measure, or get in touch about your order.</p><a class="text-link" href="{{ policy_root }}pages/faq">Frequently asked questions {% render 'icon', name: 'arrow' %}</a><a class="text-link" href="{{ policy_root }}pages/size-guide">Finding your fit {% render 'icon', name: 'arrow' %}</a><p>{% render 'policy-contact' %}</p></div></div>
+</section>
+{% schema %}
+{"name":"Customer care","settings":[]}
+{% endschema %}

@@ -1,0 +1,1 @@
+{% assign policy_root = routes.root_url | append: '/' | replace: '//', '/' %}<a href="{{ policy_root }}pages/contact">Contact customer care</a>{% if shop.email != blank %} or email <a href="mailto:{{ shop.email | escape }}">{{ shop.email | escape }}</a>{% endif %}
